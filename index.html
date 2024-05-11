@@ -149,7 +149,7 @@ function calculate() {
   const SER = sphR + cylR / 2;
   const ablationDepthR = (Math.abs(sphR) + Math.abs(cylR)) * opticZone * opticZone / 3;
   const RSB_R = cctR - flapThickness - ablationDepthR;
-  const ERSS_R = shapeR + (RSB_R < 240 ? 4 : RSB_R < 260 ? 3 : RSB_R < 280 ? 2 : RSB_R < 300 ? 1 : 0) + (age <= 21 ? 3 : age <= 25 ? 2 : age <= 29 ? 1 : 0) + (cctR < 450 ? 4 : cctR < 481 ? 3 : cctR < 511 ? 2 : 0) ;
+  const ERSS_R = shapeR + (RSB_R < 240 ? 4 : RSB_R < 260 ? 3 : RSB_R < 280 ? 2 : RSB_R < 300 ? 1 : 0) + (age <= 21 ? 3 : age <= 25 ? 2 : age <= 29 ? 1 : 0) + (cctR < 450 ? 4 : cctR < 481 ? 3 : cctR < 511 ? 2 : 0) + (SER <= -14.00 ? 4 : SER <= -12.00 ? 3 : SER <= -10.00 ? 2 : SER <= -8.00 ? 1 : 0);
   const PTA_PRK_R = ((epithelialThickness + ablationDepthR) / cctR) * 100;
   const PTA_LASIK_R = ((flapThickness + ablationDepthR) / cctR) * 100;
 
@@ -157,7 +157,7 @@ function calculate() {
   const SEL = sphL + cylL / 2;
   const ablationDepthL = (Math.abs(sphL) + Math.abs(cylL)) * opticZone * opticZone / 3;
   const RSB_L = cctL - flapThickness - ablationDepthL;
-  const ERSS_L = shapeL + (RSB_L < 240 ? 4 : RSB_L < 260 ? 3 : RSB_L < 280 ? 2 : RSB_L < 300 ? 1 : 0) + (age <= 21 ? 3 : age <= 25 ? 2 : age <= 29 ? 1 : 0) + (cctL < 450 ? 4 : cctL < 481 ? 3 : cctL < 511 ? 2 : 0) ;
+  const ERSS_L = shapeL + (RSB_L < 240 ? 4 : RSB_L < 260 ? 3 : RSB_L < 280 ? 2 : RSB_L < 300 ? 1 : 0) + (age <= 21 ? 3 : age <= 25 ? 2 : age <= 29 ? 1 : 0) + (cctL < 450 ? 4 : cctL < 481 ? 3 : cctL < 511 ? 2 : 0) + (SEL <= -14.00 ? 4 : SEL <= -12.00 ? 3 : SEL <= -10.00 ? 2 : SEL <= -8.00 ? 1 : 0);
   const PTA_PRK_L = ((epithelialThickness + ablationDepthL) / cctL) * 100;
   const PTA_LASIK_L = ((flapThickness + ablationDepthL) / cctL) * 100;
 
