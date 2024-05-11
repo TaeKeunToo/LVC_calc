@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Laser Vision Correction Indicator Calculator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: auto; /* Allows scrolling if the view is smaller than 1000px in height */
+  }
+  .calculator {
+    width: 800px;
+    max-height: 600px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow-y: auto; /* Enables scrolling within the calculator if necessary */
+  }
+  .title {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .input-section, .output-section {
+    margin-bottom: 15px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+  }
+  input[type="text"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  .column {
+    float: left;
+    width: 50%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .button {
+    clear: both;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .output {
+    background-color: #eef;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 100px;
+  }
+  .output p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  .clear {
+    clear: both;
+  }
+</style>
+</head>
+<body>
+<div class="calculator">
+  <div class="title">Laser Vision Correction Indicator Calculator</div>
+  <div class="subtitle">Preoperative examinations</div>
+  <div class="input-section">
+    <label>Age (years): <input type="text" id="age"></label>
+    <label>Optic Zone Diameter (mm): <input type="text" id="opticZone"></label>
+    <label>Flap Thickness for LASIK (microns): <input type="text" id="flapThickness"></label>
+    <label>Epithelial Thickness (microns): <input type="text" id="epithelialThickness"></label>
+    <div class="column">
+      <div>Right Eye:</div>
+      <label>Sph (D): <input type="text" id="sphR"></label>
+      <label>Cyl (D): <input type="text" id="cylR"></label>
+      <label>CCT (microns): <input type="text" id="cctR"></label>
+      <label>Corneal Shape:
+        <select id="shapeR">
+          <option value="0">Normal</option>
+          <option value="1">Abnormal</option>
+          <option value="3">Interior Steepening</option>
+          <option value="4">Forme Fruste Keratoconus</option>
+        </select>
+      </label>
+    </div>
+    <div class="column">
+      <div>Left Eye:</div>
+      <label>Sph (D): <input type="text" id="sphL"></label>
+      <label>Cyl (D): <input type="text" id="cylL"></label>
+      <label>CCT (microns): <input type="text" id="cctL"></label>
+      <label>Corneal Shape:
+        <select id="shapeL">
+          <option value="0">Normal</option>
+          <option value="1">Abnormal</option>
+          <option value="3">Interior Steepening</option>
+          <option value="4">Forme Fruste Keratoconus</option>
+        </select>
+      </label>
+    </div>
+    <div class="clear"></div>
+    <button class="button" onclick="calculate()">Calculate</button>
+  </div>
+  <div class="output-section">
+    <div class="column output" id="outputR">Results for Right Eye will appear here.</div>
+    <div class="column output" id="outputL">Results for Left Eye will appear here.</div>
+    <div class="clear"></div>
+  </div>
+</div>
+
+<script>
+function calculate() {
+  // Inputs
+  const age = parseInt(document.getElementById('age').value);
+  const opticZone = parseFloat(document.getElementById('opticZone').value);
+  const flapThickness = parseFloat(document.getElementById('flapThickness').value);
+  const epithelialThickness = parseFloat(document.getElementById('epithelialThickness').value);
+  const sphR = parseFloat(document.getElementById('sphR').value);
+  const cylR = parseFloat(document.getElementById('cylR').value);
+  const cctR = parseFloat(document.getElementById('cctR').value);
+  const shapeR = parseInt(document.getElementById('shapeR').value);
+  const sphL = parseFloat(document.getElementById('sphL').value);
+  const cylL = parseFloat(document.getElementById('cylL').value);
+  const cctL = parseFloat(document.getElementById('cctL').value);
+  const shapeL = parseInt(document.getElementById('shapeL').value);
+
+  // Calculations for Right Eye
+  const ablationDepthR = (Math.abs(sphR) + Math.abs(cylR)) * opticZone * opticZone / 3;
+  const RSB_R = cctR - flapThickness - ablationDepthR;
+  const ERSS_R = shapeR + (RSB_R < 280 ? 2 : RSB_R < 300 ? 1 : 0) + (age <= 21 ? 3 : age <= 25 ? 2 : age <= 29 ? 1 : 0) + (cctR < 480 ? 3 : cctR < 510 ? 2 : 0);
+  const PTA_PRK_R = ((epithelialThickness + ablationDepthR) / cctR) * 100;
+  const PTA_LASIK_R = ((flapThickness + ablationDepthR) / cctR) * 100;
+
+  // Calculations for Left Eye
+  const ablationDepthL = (Math.abs(sphL) + Math.abs(cylL)) * opticZone * opticZone / 3;
+  const RSB_L = cctL - flapThickness - ablationDepthL;
+  const ERSS_L = shapeL + (RSB_L < 280 ? 2 : RSB_L < 300 ? 1 : 0) + (age <= 21 ? 3 : age <= 25 ? 2 : age <= 29 ? 1 : 0) + (cctL < 480 ? 3 : cctL < 510 ? 2 : 0);
+  const PTA_PRK_L = ((epithelialThickness + ablationDepthL) / cctL) * 100;
+  const PTA_LASIK_L = ((flapThickness + ablationDepthL) / cctL) * 100;
+
+  // Output
+  document.getElementById('outputR').innerHTML =
+    `<p>Ablation Depth: ${ablationDepthR.toFixed(2)} microns</p>` +
+    `<p>RSB: ${RSB_R.toFixed(2)} microns</p>` +
+    `<p>Randleman ERSS: ${ERSS_R} points</p>` +
+    `<p>PTA PRK: ${PTA_PRK_R.toFixed(2)}%</p>` +
+    `<p>PTA LASIK: ${PTA_LASIK_R.toFixed(2)}%</p>`;
+
+  document.getElementById('outputL').innerHTML =
+    `<p>Ablation Depth: ${ablationDepthL.toFixed(2)} microns</p>` +
+    `<p>RSB: ${RSB_L.toFixed(2)} microns</p>` +
+    `<p>Randleman ERSS: ${ERSS_L} points</p>` +
+    `<p>PTA PRK: ${PTA_PRK_L.toFixed(2)}%</p>` +
+    `<p>PTA LASIK: ${PTA_LASIK_L.toFixed(2)}%</p>`;
+}
+</script>
+</body>
+</html>
